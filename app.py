@@ -10,7 +10,7 @@ st.header('Data Viewer')
 st.dataframe(df)
 
 #------------------------------
-st.header(Manufactures by years)
+st.header('Manufactures by years')
 st.write("""###### Let's analyze manufactures by year.""")
 
 manufacturers = df['manufacturer'].unique()
@@ -38,3 +38,27 @@ choice_for_hist = st.selectbox('Split for Price distribution',list_for_hist)
 fig1 = px.histogram(df, x='price', color=choice_for_hist)
 fig1.update_layout(title="<b> Split of price by {}</b>".format(choice_for_hist))
 st.plotly_chart(fig1)
+
+
+#------------------------------------
+#defining age category of the car
+
+df['age']= 2023 - df['model_year']
+
+def age_category(x):
+    if x<5: return '<5'
+    elif x>=5 and x<10: return '5-10'
+    elif x>=10 and x<20: return '10-20'
+    else: return '>20'
+
+df['age_category'] = df['age'].apply(age_category)
+
+st.write("""###### Checking how Price is affected by odometer, condition, fuel type.""")
+
+list_for_scatter = ('odometer', 'condition', 'fuel')
+
+choice_for_scatter= st.selectbox('Price Dependency on', list_for_scatter)
+fig2 = px.scatter(df, x='price', y= choice_for_scatter, color ='age_category', hover_data= ['model_year'])
+
+fig2.update_layout("<b> Price vs. {} <b>".format(choice_for_scatter))
+st.plotly_chart(fig2)
