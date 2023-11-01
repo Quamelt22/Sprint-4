@@ -9,6 +9,10 @@ df['year'] = df['date_posted'].dt.year
 st.header('Data Viewer')
 st.dataframe(df)
 
+#------------------------------
+st.header(Manufactures by years)
+st.write("""###### Let's analyze manufactures by year.""")
+
 manufacturers = df['manufacturer'].unique()
 
 make_choice_manu = st.selectbox('Select manufacturer:',manufacturers)
@@ -20,8 +24,7 @@ year_range = st.slider('Choose Year', value=(min_year, max_year), min_value = mi
 
 actual_range = list(range(year_range[0], year_range[1] +1))
 
-
-df.filtered = df[df['manufacturer']==make_choice_manu] & (df.model_year.isin(list(actual_range)))
+df.filtered = df[(df['manufacturer']==make_choice_manu) & (df.model_year.isin(list(actual_range)))]
 st.table(df.filtered)
 
 #--------------------------
@@ -30,7 +33,7 @@ st.header('Price Analysis')
 st.write("""###### Let's analyze what influences price the most. Comparing price vs. transmission vs. body type""")
 
 
-list_for_hist = ['transmission', 'cylinder', 'type','condition']
+list_for_hist = ['transmission', 'cylinders', 'type','condition']
 choice_for_hist = st.selectbox('Split for Price distribution',list_for_hist)
 fig1 = px.histogram(df, x='price', color=choice_for_hist)
 fig1.update_layout(title="<b> Split of price by {}</b>".format(choice_for_hist))
