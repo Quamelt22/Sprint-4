@@ -6,6 +6,14 @@ df = pd.read_csv('vehicles2_us.csv')
 df['date_posted'] = pd.to_datetime(df['date_posted'], format= '%m/%d/%Y')
 df['year'] = df['date_posted'].dt.year
 
+avg_year = df['model_year'].mean()
+df['model_year'] = df['model_year'].fillna(avg_year)
+avg_cylinder = df['cylinders'].mean()
+df['cylinders'] = df['cylinders'].fillna(avg_cylinder)
+avg_odometer = df['odometer'].mean()
+df['odometer'] = df['odometer'].fillna(avg_odometer)
+df['is_4wd'] = df['is_4wd'].fillna(0)
+
 st.header('Data Viewer')
 st.dataframe(df)
 
